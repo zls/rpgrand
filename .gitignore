@@ -1,3 +1,4 @@
 .cache/
 .ropeproject/
 __pycache__/
+rpgrand.egg-info/

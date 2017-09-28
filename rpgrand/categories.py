@@ -1,5 +1,5 @@
-from loaders import Loader
-from properties import Property
+from .loaders import Loader
+from .properties import Property
 
 class CategoryInvalidConfig(Exception): pass
 

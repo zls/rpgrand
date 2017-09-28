@@ -1,4 +1,4 @@
-from rand import RandomItem
+from .rand import RandomItem
 
 class Property(object):
     def __init__(self, name, values, randomizer):
