@@ -43,10 +43,18 @@ class Category(object):
                     {
                         "Name": "Name",
                         "Randomizer": "weighted",
-                        "Source": "./foo/bar.yml",
+                        "Source": "./foo/bar/yml",
                         "SourceLoader": "file",
                         "SourceType": "yml",
-                        "SourceKeyPath": ".Names.Unisex"
+                        "SourceKeyPath": ".Names.Unisex",
+                        "Sources": [
+                            {
+                                "Source": ./foo/bar.yml",
+                                "SourceLoader": "file",
+                                "SourceType": "yml",
+                                "SourceKeyPath": ".Names.Unisex"
+                            }
+                        ]
                     }
                 ]
             }
@@ -72,39 +80,64 @@ class Category(object):
             raise CategoryInvalidConfig("No `Config.Properties` section")
 
         config_defaults = config["Config"].get("Defaults", {})
-        default_source = config_defaults.get("Source", None)
-        default_source_loader = config_defaults.get("SourceLoader", None)
-        default_source_type = config_defaults.get("SourceType", None)
-        default_randomizer = config_defaults.get("Randomizer", None)
+        defaults = {}
+        defaults["source"] = config_defaults.get("Source", None)
+        defaults["source_loader"] = config_defaults.get("SourceLoader", None)
+        defaults["source_type"] = config_defaults.get("SourceType", None)
+        defaults["randomizer"] = config_defaults.get("Randomizer", None)
+        return _load_properties_from_sources(config["Config"]["Properties"], defaults)
 
-        for prop in config["Config"]["Properties"]:
-            if not prop.get("Name"):
-                raise CategoryInvalidConfigProperty("No `Name` key in `Config.Properties` item")
-            name = prop["Name"]
 
-            if not prop.get("Source") and not default_source:
-                raise CategoryInvalidConfigProperty("No `Source` key in `Config.Properties` item and default not set")
-            source = prop.get("Source") if prop.get("Source") else default_source
+def _load_properties_from_sources(props, defaults):
+    properties = {}
+    for prop in props:
+        if prop.get("Source") and prop.get("Sources"):
+            raise CategoryInvalidConfig("`Source` and `Sources` are mutually exclusive")
 
-            if not prop.get("SourceLoader") and  not default_source_loader:
+        if not prop.get("Name"):
+            raise CategoryInvalidConfigProperty("No `Name` key in `Config.Properties` item")
+        name = prop["Name"]
+
+        if not defaults["source"] and ( not prop.get("Source") and not prop.get("Sources") ):
+            raise CategoryInvalidConfigProperty("No `Source` or `Sources` key in `Config.Properties` item and default not set")
+        if prop.get("Source"):
+            sources = [ prop["Source"] ]
+        elif prop.get("Sources"):
+            sources = prop["Sources"]
+        else:
+            sources = [ defaults["source"] ]
+
+        values = []
+        for source in sources:
+            if type(source) == dict:
+                _s = source.get("Source")
+                _sl = source.get("SourceLoader")
+                _st = source.get("SourceType")
+                _rnd = source.get("Randomizer")
+            else:
+                _s = source
+                _sl = prop.get("SourceLoader")
+                _st = prop.get("SourceType")
+                _rnd = prop.get("Randomizer")
+
+            if not _sl and not defaults["source_loader"]:
                 raise CategoryInvalidConfigProperty("No `SourceLoader` key in `Config.Properties` item and default not set")
-            source_loader = prop.get("SourceLoader") if prop.get("SourceLoader") else default_source_loader
+            source_loader = _sl if _sl else defaults["source_loader"]
 
-            if not prop.get("SourceType") and not default_source_type:
+            if not _st and not defaults["source_type"]:
                 raise CategoryInvalidConfigProperty("No `SourceType` key in `Config.Properties` item and default not set")
-            source_type = prop.get("SourceType") if prop.get("SourceType") else default_source_type
+            source_type = _st if _st else defaults["source_type"]
 
-            if not prop.get("Randomizer") and not default_randomizer:
+            if not _rnd and not defaults["randomizer"]:
                 raise CategoryInvalidConfigProperty("No `Randomizer` key in `Config.Properties` item and default not set")
-            randomizer = prop.get("Randomizer") if prop.get("Randomizer") else default_randomizer
+            randomizer = _rnd if _rnd else defaults["randomizer"]
 
             _loader = Loader.get_loader(source_type=source_type, source_loader=source_loader)
-            property_values = _loader.load(source)
+            property_values = _loader.load(_s)
             if prop.get("SourceKeyPath"):
-                values = property_values.get(prop["SourceKeyPath"])
+                values += property_values.get(prop["SourceKeyPath"])
             else:
-                values = property_values
+                values += property_values
 
             properties[name] = Property(name, values, randomizer)
-
-        return properties
+    return properties

@@ -1,0 +1,16 @@
+Type: config_map
+Metadata:
+  Version: 1
+  CategoryType: npc
+Config:
+  Defaults:
+    Randomizer: from_list
+    SourceLoader: file
+    SourceType: yml
+  Properties:
+    - Name: FirstName
+      Sources:
+        - Source: ./examples/seeds/first_names.yml
+        - Source: ./examples/seeds/first_names2.yml
+    - Name: LastName
+      Source: ./examples/seeds/last_names.yml
