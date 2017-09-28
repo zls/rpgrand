@@ -11,6 +11,10 @@ class Property(object):
         return self.value
 
 
+    def __repr__(self):
+        return self.value
+
+
     @property
     def value(self):
         return self.randomizer(self.values)
