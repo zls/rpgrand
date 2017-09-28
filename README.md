@@ -18,3 +18,11 @@ Adjust path to config file as necessary. Be aware that the config file will try 
 cd <path_to_examples>
 rpgrand -c merge_files.yml
 ```
+
+## Example
+
+### Random human NPC using external source
+```
+cd <path_to_repo>/examples
+rpgrand -c human_male.yml -o templates/npc.tmpl -n 10
+```
