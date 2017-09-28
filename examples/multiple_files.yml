@@ -9,6 +9,6 @@ Config:
     SourceType: yml
   Properties:
     - Name: FirstName
-      Source: ./examples/seeds/first_names.yml
+      Source: ./seeds/first_names.yml
     - Name: LastName
-      Source: ./examples/seeds/last_names.yml
+      Source: ./seeds/last_names.yml

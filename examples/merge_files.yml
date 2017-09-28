@@ -10,7 +10,7 @@ Config:
   Properties:
     - Name: FirstName
       Sources:
-        - Source: ./examples/seeds/first_names.yml
-        - Source: ./examples/seeds/first_names2.yml
+        - Source: ./seeds/first_names.yml
+        - Source: ./seeds/first_names2.yml
     - Name: LastName
-      Source: ./examples/seeds/last_names.yml
+      Source: ./seeds/last_names.yml

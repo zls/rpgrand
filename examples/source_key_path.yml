@@ -7,7 +7,7 @@ Config:
     Randomizer: from_list
     SourceLoader: file
     SourceType: yml
-    Source: ./examples/seeds/names.yml
+    Source: ./seeds/names.yml
   Properties:
     - Name: FirstName
       SourceKeyPath: FirstName
