@@ -12,5 +12,6 @@ setup(name="rpgrand",
           "pip",
           "Jinja2",
           "PyYAML",
+          "requests",
       ]
     )

@@ -21,7 +21,14 @@ class Loader(object):
             with open(path) as fobj:
                 return load(fobj)
 
+        def url_load(path):
+            import requests
+            r = requests.get(path)
+            return r.json()
+
         if source_loader == "file" and (source_type == "yaml" or source_type == "yml"):
             return cls(yaml_file_load)
         if source_loader == "file" and source_type == "json":
             return cls(json_file_load)
+        if source_loader == "url" and source_type == "json":
+            return cls(url_load)

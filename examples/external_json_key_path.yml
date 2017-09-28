@@ -1,0 +1,15 @@
+Type: config_map
+Metadata:
+  Version: 1
+  CategoryType: human male
+Config:
+  Defaults:
+    Randomizer: from_list
+    SourceLoader: url
+    SourceType: json
+    Source: https://raw.githubusercontent.com/grapealarmist/npcjson/master/NPCdata.json
+  Properties:
+    - Name: FirstName
+      SourceKeyPath: CommonMaleFirstNames
+    - Name: LastName
+      SourceKeyPath: CommonLastNames
