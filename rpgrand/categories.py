@@ -37,12 +37,14 @@ class Category(object):
                     "Randomizer": "from_list",
                     "Source": "./foo/bar.yml",
                     "SourceLoader": "file",
-                    "SourceType": "yml"
+                    "SourceType": "yml",
+                    "UseNameForSourceKeyPath": true
                 },
                 "Properties": [
                     {
                         "Name": "Name",
                         "Randomizer": "weighted",
+                        "Quantity": "1",
                         "Source": "./foo/bar/yml",
                         "SourceLoader": "file",
                         "SourceType": "yml",
@@ -85,6 +87,7 @@ class Category(object):
         defaults["source_loader"] = config_defaults.get("SourceLoader", None)
         defaults["source_type"] = config_defaults.get("SourceType", None)
         defaults["randomizer"] = config_defaults.get("Randomizer", None)
+        defaults["use_name_skp"] = config_defaults.get("UseNameForSourceKeyPath", None)
         return _load_properties_from_sources(config["Config"]["Properties"], defaults)
 
 
@@ -106,6 +109,8 @@ def _load_properties_from_sources(props, defaults):
             sources = prop["Sources"]
         else:
             sources = [ defaults["source"] ]
+
+        quantity = prop.get("Quantity", "1")
 
         values = []
         for source in sources:
@@ -134,10 +139,10 @@ def _load_properties_from_sources(props, defaults):
 
             _loader = Loader.get_loader(source_type=source_type, source_loader=source_loader)
             property_values = _loader.load(_s)
-            if prop.get("SourceKeyPath"):
-                values += property_values.get(prop["SourceKeyPath"])
+            if prop.get("SourceKeyPath") or defaults["use_name_skp"]:
+                values += property_values.get(prop["SourceKeyPath"]) if property_values.get(prop.get("SourceKeyPath")) else property_values.get(name)
             else:
                 values += property_values
 
-            properties[name] = Property(name, values, randomizer)
+            properties[name] = Property(name, values, randomizer, quantity=quantity)
     return properties

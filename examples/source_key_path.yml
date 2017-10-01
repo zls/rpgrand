@@ -8,8 +8,8 @@ Config:
     SourceLoader: file
     SourceType: yml
     Source: ./seeds/names.yml
+    UseNameForSourceKeyPath: true
   Properties:
     - Name: FirstName
-      SourceKeyPath: FirstName
-    - Name: LastName
+    - Name: LName
       SourceKeyPath: LastName

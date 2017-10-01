@@ -1,8 +1,11 @@
-Name: {{ v.FirstName }} "{{ v.Nickname }}" {{ v.LastName }}
+{{ v.FirstName }} "{{ v.Nicknames }}" {{ v.LastName }}
 Description:
-  Face: {{ v.FaceDesc }}
-  Body: {{ v.BodyDesc }}
-Mannerisms: {{ v.Mannerisms }}
+  Face: {{ v.FaceStuff }}
+  Body: {{ v.BodyStuff }}
+Mannerisms:
+{% for m in v.Mannerisms -%}
+    - {{ m }}
+{% endfor -%}
 Demeanor: {{ v.Demeanor }}
 Ideals: {{ v.Ideals }}
 Bonds: {{ v.Bonds }}

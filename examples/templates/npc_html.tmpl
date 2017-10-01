@@ -1,0 +1,64 @@
+<html>
+<head>
+<style>
+body {
+  background-color: linen;
+}
+
+table {
+}
+
+.npc {
+}
+
+.npc > tbody > tr > td:first-child {
+  font-weight: bold;
+}
+
+.mannerisms {
+  padding-left: 20px;
+}
+</style>
+</head>
+<body>
+  <table class="npc">
+    <tbody>
+      <tr>
+        <td>Name:</td> <td>{{ v.FirstName }} "{{ v.Nicknames }}" {{ v.LastName }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Description:</td>
+      </tr>
+      <tr>
+        <td>Face:</td><td>{{ v.FaceStuff }}</td>
+      </tr>
+      <tr>
+        <td>Body:</td><td>{{ v.BodyStuff }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Mannerisms:</td>
+      </tr>
+  {% for m in v.Mannerisms -%}
+      <tr>
+        <td></td><td class="mannerisms">- {{ m }}</td>
+      </tr>
+  {% endfor -%}
+      <tr>
+        <td>Demeanor:</td><td>{{ v.Demeanor }}</td>
+      </tr>
+      <tr>
+        <td>Ideals:</td><td>{{ v.Ideals }}</td>
+      </tr>
+      <tr>
+        <td>Bonds:</td><td>{{ v.Bonds }}</td>
+      </tr>
+      <tr>
+        <td>Flaws:</td><td>{{ v.Flaws }}</td>
+      </tr>
+      <tr>
+        <td>Random Fact:</td><td>{{ v.RandomFact }}</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
