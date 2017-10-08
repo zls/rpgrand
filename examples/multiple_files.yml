@@ -17,3 +17,6 @@ Config:
       Type: dict
       Randomizer: from_dict
       SourceKeyPath: Items
+    - Name: Injuries
+      Source: ./seeds/weighted.yml
+      Randomizer: weighted

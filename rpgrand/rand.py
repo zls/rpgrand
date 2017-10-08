@@ -26,9 +26,8 @@ class RandomItem():
 
 
         '''
-        total = sum([x[0] for x in l])
         nl = []
         for item in l:
-            for times in range([0]):
-                nl.append(x[1])
+            for times in range(item[0]):
+                nl.append(item[1])
         return choice(nl)
