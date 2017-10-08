@@ -1,1 +1,3 @@
-{{ v }}
+{% for i in v.items() -%}
+{{ i|string }}
+{% endfor -%}

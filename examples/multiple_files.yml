@@ -12,3 +12,8 @@ Config:
       Source: ./seeds/first_names.yml
     - Name: LastName
       Source: ./seeds/last_names.yml
+    - Name: Items
+      Source: ./seeds/dict.yml
+      Type: dict
+      Randomizer: from_dict
+      SourceKeyPath: Items

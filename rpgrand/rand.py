@@ -32,5 +32,3 @@ class RandomItem():
             for times in range([0]):
                 nl.append(x[1])
         return choice(nl)
-
-

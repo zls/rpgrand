@@ -1,6 +1,11 @@
 from .loaders import Loader
 from .properties import Property
 
+VALID_PROPERTY_TYPES = (
+    "list",
+    "dict"
+)
+
 class CategoryInvalidConfig(Exception): pass
 
 class CategoryInvalidConfigProperty(Exception): pass
@@ -35,6 +40,7 @@ class Category(object):
             "Config": {
                 "Defaults": {
                     "Randomizer": "from_list",
+                    "Type": "list"
                     "Source": "./foo/bar.yml",
                     "SourceLoader": "file",
                     "SourceType": "yml",
@@ -43,8 +49,9 @@ class Category(object):
                 "Properties": [
                     {
                         "Name": "Name",
+                        "Type": "dict",
                         "Randomizer": "weighted",
-                        "Quantity": "1",
+                        "Quantity": "1..4",
                         "Source": "./foo/bar/yml",
                         "SourceLoader": "file",
                         "SourceType": "yml",
@@ -83,6 +90,7 @@ class Category(object):
 
         config_defaults = config["Config"].get("Defaults", {})
         defaults = {}
+        defaults["type"] = config_defaults.get("Type", "list")
         defaults["source"] = config_defaults.get("Source", None)
         defaults["source_loader"] = config_defaults.get("SourceLoader", None)
         defaults["source_type"] = config_defaults.get("SourceType", None)
@@ -90,6 +98,23 @@ class Category(object):
         defaults["use_name_skp"] = config_defaults.get("UseNameForSourceKeyPath", None)
         return _load_properties_from_sources(config["Config"]["Properties"], defaults)
 
+
+def _validate_property_types(t):
+    if t not in VALID_PROPERTY_TYPES:
+        raise CategoryInvalidConfig("Invalid property type {}".format(t))
+
+def _get_ptype(t):
+    if t == "list":
+        return list
+    elif t == "dict":
+        return dict
+    return None
+
+def _update_values(v, data, ptype=None):
+    if ptype == dict:
+        v.update(data)
+    elif ptype == list:
+        v += data
 
 def _load_properties_from_sources(props, defaults):
     properties = {}
@@ -112,7 +137,11 @@ def _load_properties_from_sources(props, defaults):
 
         quantity = prop.get("Quantity", "1")
 
-        values = []
+
+        # Get Type
+        ptype = _get_ptype(prop["Type"]) if prop.get("Type") else _get_ptype(defaults["type"])
+
+        values = ptype()
         for source in sources:
             if type(source) == dict:
                 _s = source.get("Source")
@@ -140,9 +169,10 @@ def _load_properties_from_sources(props, defaults):
             _loader = Loader.get_loader(source_type=source_type, source_loader=source_loader)
             property_values = _loader.load(_s)
             if prop.get("SourceKeyPath") or defaults["use_name_skp"]:
-                values += property_values.get(prop["SourceKeyPath"]) if property_values.get(prop.get("SourceKeyPath")) else property_values.get(name)
+                data = property_values.get(prop["SourceKeyPath"]) if property_values.get(prop.get("SourceKeyPath")) else property_values.get(name)
             else:
-                values += property_values
+                data = property_values
+            _update_values(values, data, ptype=ptype)
 
-            properties[name] = Property(name, values, randomizer, quantity=quantity)
+        properties[name] = Property(name, values, randomizer, quantity=quantity)
     return properties

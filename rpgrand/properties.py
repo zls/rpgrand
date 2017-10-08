@@ -19,7 +19,7 @@ class Property(object):
 
 
     def __repr__(self):
-        return self.value
+        return "{}".format(self.value)
 
 
     def __iter__(self):
@@ -31,7 +31,7 @@ class Property(object):
             q = self.quantity
 
         for c in range(q):
-            yield self.randomizer(self.values)
+            yield self.value
 
 
     @property
@@ -41,6 +41,4 @@ class Property(object):
 
     def _get_randomizer(self, randomizer):
         r = RandomItem()
-        if randomizer == "from_list":
-            return r.from_list
-
+        return getattr(r, randomizer, lambda: None)
