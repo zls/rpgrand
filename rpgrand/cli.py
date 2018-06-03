@@ -2,6 +2,7 @@ import argparse
 
 from .output import render
 
+from .config_map import ConfigMap
 from .categories import Category
 
 SEP = '---'
@@ -16,7 +17,8 @@ def main():
     parser.add_argument("--num", "-n", type=int, default=1, help="Number of items to create")
     args = parser.parse_args()
 
-    c = Category.create(args.config)
+    cm = ConfigMap(args.config)
+    c = Category.create(cm.properties)
     count = 0
     for n in range(args.num):
         if count > 0:
