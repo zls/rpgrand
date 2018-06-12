@@ -1,4 +1,6 @@
-# WIP
+# RPG Randomizer
+
+This package provides the `rpgrand` cli tool and library for taking yaml or json configuration maps and generating structured output of randomized data.
 
 ## Installation
 Requires python 3.6
@@ -16,7 +18,7 @@ Adjust path to config file as necessary. Be aware that the config file will try 
 
 ```
 cd <path_to_examples>
-rpgrand -c merge_files.yml
+rpgrand -c <configuration_map>
 ```
 
 ## Example

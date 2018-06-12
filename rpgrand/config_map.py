@@ -45,10 +45,17 @@ class ConfigMap(object):
     '''
     def __init__(self, config_path, source_type="yml", source_loader="file"):
         loader = Loader.get_loader(source_type=source_type, source_loader=source_loader)
-        config = loader.load(config_path)
-        _validate_config(config)
+        self.config = loader.load(config_path)
+        _validate_config(self.config)
 
-        self.properties = _create_properties_map(config)
+        self.properties = _create_properties_map(self.config)
+
+
+    def __repr__(self):
+        return "{}".format(self.config)
+
+    def __str__(self):
+        return self.config
 
 
 def _create_properties_map(config):

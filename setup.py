@@ -1,17 +1,31 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-setup(name="rpgrand",
-      version="0.1",
-      description="RPG randomizer",
-      packages=["rpgrand"],
-      entry_points = {
-          "console_scripts": ["rpgrand=rpgrand.cli:main"],
-      },
-      zip_safe=False,
-      install_requires=[
-          "pip",
-          "Jinja2",
-          "PyYAML",
-          "requests",
-      ]
-    )
+setup(
+    name='rpgrand',
+    version='0.2.0',
+    description='Create structured randomized output from yaml or json files.',
+    url='https://github.com/zls/rpgrand',
+    classifiers=[
+        'Development Status :: 2 - Development',
+        'License :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+    ],
+    keywords='rpg randomizer',
+    project_urls={
+        'Source': 'https://github.com/zls/rpgrand',
+        'Tracker': 'https://github.com/zls/rpgrand/issues',
+    },
+    packages=['rpgrand'],
+    python_requires='>=3',
+    entry_points = {
+        'console_scripts': ['rpgrand=rpgrand.cli:main'],
+    },
+    data_files=[('examples', ['examples/'])],
+    zip_safe=False,
+    install_requires=[
+        'Jinja2',
+        'PyYAML',
+        'requests',
+    ]
+)

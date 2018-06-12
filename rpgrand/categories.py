@@ -20,5 +20,5 @@ class Category(object):
 
 
     @classmethod
-    def create(cls, properties):
-        return cls(**properties)
+    def create(cls, config_map):
+        return cls(**config_map.properties)

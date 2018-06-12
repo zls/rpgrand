@@ -18,7 +18,7 @@ def main():
     args = parser.parse_args()
 
     cm = ConfigMap(args.config)
-    c = Category.create(cm.properties)
+    c = Category.create(cm)
     count = 0
     for n in range(args.num):
         if count > 0:
