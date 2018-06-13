@@ -8,8 +8,8 @@ setup(
     description='Create structured randomized output from yaml or json files.',
     url='https://github.com/zls/rpgrand',
     classifiers=[
-        'Development Status :: 2 - Development',
-        'License :: MIT License',
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
     ],
@@ -23,7 +23,6 @@ setup(
     entry_points = {
         'console_scripts': ['rpgrand=rpgrand.cli:main'],
     },
-    data_files=[('examples', ['examples/'])],
     zip_safe=False,
     install_requires=[
         'Jinja2',
