@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+from rpgrand import __version__
+
 setup(
     name='rpgrand',
-    version='0.2.0',
+    version=__version__,
     description='Create structured randomized output from yaml or json files.',
     url='https://github.com/zls/rpgrand',
     classifiers=[
